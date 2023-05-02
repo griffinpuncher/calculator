@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded",function () {
         if(primedOperation && inputBox.value) {operate()}
     });
 
-    document.addEventListener("keypress", event => {
+    document.addEventListener("keydown", event => {
         if(event.key === "Enter" && primedOperation && inputBox.value) {operate()}
         if(event.key === "+") {operatorPrime("add")}
         if(event.key === "-") {operatorPrime("subtract")}
         if(event.key === "x" || event.key === "*") {operatorPrime("multiply")}
         if(event.key === "/") {operatorPrime("divide")}
         if(event.key === "c") {clear()}
-        if(event.key === "b") {backspace()}
+        if(event.key === "Backspace") {backspace()}
         if(!inputFocused) {
             inputBox.value += event.key;
             checkInput();
