@@ -3,11 +3,13 @@ document.addEventListener("DOMContentLoaded",function () {
     const numbers = document.querySelectorAll(".number");
     const operators = document.querySelectorAll(".operator");
     const inputBox = document.getElementById("input-box");
-    const regex = new RegExp("/^\d*(\.\d{0,1})?$/");
+    const regex = new RegExp("^\\d*(\\.?\\d*)?$");
     let valueOne = null;
     let valueTwo = null;
     let primedOperation = null;
     let secondPrimed = null;
+    let evaluatedInput = "";
+    let inputFocused = false;
     
 
     //event listeners
@@ -19,7 +21,8 @@ document.addEventListener("DOMContentLoaded",function () {
         operator.addEventListener("click", operatorClick);
     })
     
-    inputBox.addEventListener("input", numberType);
+    inputBox.addEventListener("input", checkInput);
+    inputBox.addEventListener("focus", () => inputFocused = true);
 
     document.getElementById("equals").addEventListener("click", () => {
         if(primedOperation && inputBox.value) {operate()}
@@ -32,17 +35,35 @@ document.addEventListener("DOMContentLoaded",function () {
         if(event.key === "x" || event.key === "*") {operatorPrime("multiply")}
         if(event.key === "/") {operatorPrime("divide")}
         if(event.key === "c") {clear()}
+        if(event.key === "b") {backspace()}
+        if(!inputFocused) {
+            inputBox.value += event.key;
+            checkInput();
+        }
+        console.log(event.key);
     });
 
     document.getElementById("clear").addEventListener("click", clear);
+    document.getElementById("backspace").addEventListener("click", backspace);
 
     //Functions
     function numberClick() {
-        inputBox.value += this.textContent;
+        if((inputBox.value + this.textContent).match(regex)) {
+            inputBox.value += this.textContent;
+            evaluatedInput = inputBox.value;
+        }
+        else {
+            console.log("oops!");
+        }
     }
 
-    function numberType () {
-
+    function checkInput () {
+        if(!inputBox.value.match(regex)) {
+            inputBox.value = evaluatedInput;
+        }
+        else {
+            evaluatedInput = inputBox.value;
+        }
     }
 
     function operatorClick() {
@@ -64,11 +85,8 @@ document.addEventListener("DOMContentLoaded",function () {
             primedOperation = operation;
             valueOne = parseFloat(inputBox.value);
         }
-        console.log(primedOperation);
-        console.log(secondPrimed);
-        console.log(valueOne);
-        console.log(valueTwo);
         inputBox.value = "";
+        checkInput();
     }
 
     function operate () {
@@ -86,16 +104,21 @@ document.addEventListener("DOMContentLoaded",function () {
         const answer = valueOne + valueTwo;
         inputBox.value = answer;
         valueOne = answer;
+        checkInput();
+
     }
     function subtract () {
         const answer = valueOne-valueTwo;
         inputBox.value = answer;
         valueOne = answer;
+        checkInput();
+
     }
     function multiply () {
         const answer = valueOne*valueTwo;
         inputBox.value = answer;
         valueOne = answer;
+        checkInput();
     }
     function divide () {
         if(valueTwo == 0) {
@@ -106,12 +129,19 @@ document.addEventListener("DOMContentLoaded",function () {
             const answer = valueOne/valueTwo;
             inputBox.value = answer;
             valueOne = answer;
+            checkInput();
         }
     }
 
     function clear () {
         valueOne = valueTwo = primedOperation = secondPrimed = null;
         inputBox.value = "";
+        checkInput();
+    }
+
+    function backspace () {
+        inputBox.value = inputBox.value.slice(0,-1);
+        checkInput();
     }
 });
 
@@ -125,7 +155,7 @@ adds the number clicked to the current Input. If there is already a decimal poin
 will have no effect.
 If the input box is full clicking numbers will be ignored.
 
-numberType:
+checkInput:
 If the input box is selected the input will evaluate if the end result of adding the character to
 the string, and add the character if the end result matches regex.
 If the input box is not selected the characters will be evaluated based on being placed on the end.
