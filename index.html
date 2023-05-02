@@ -9,6 +9,32 @@
     <title>Calculator</title>
 </head>
 <body>
-    
+    <div class="calc-container">
+        <input type="text" pattern="^\d*\.?\d{0,1}$" class="input" id="input-box">
+        <div class="input">
+            <div class="numbers-container">
+                <div class="number button block3" id="1">1</div>
+                <div class="number button block3" id="2">2</div>
+                <div class="number button block3" id="3">3</div>
+                <div class="number button block3" id="4">4</div>
+                <div class="number button block3" id="5">5</div>
+                <div class="number button block3" id="6">6</div>
+                <div class="number button block3" id="7">7</div>
+                <div class="number button block3" id="8">8</div>
+                <div class="number button block3" id="9">9</div>
+                <div class="number button block3" id="0">0</div>
+                <div class="number button block3" id="decimal">.</div>
+                <div class="button block3" id="equals">=</div>
+            </div>
+            <div class="operators-container">
+                <div class="operator button block2" id="add">+</div>
+                <div class="operator button block2" id="subtract">-</div>
+                <div class="operator button block2" id="multiply">x</div>
+                <div class="operator button block2" id="divide">/</div>
+                <div class="button block2" id="clear">C</div>
+                <div class="button block2" id="backspace">B</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
